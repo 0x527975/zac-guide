@@ -66,11 +66,15 @@ const Comment = mongoose.model('Comment', commentSchema);
 // Create Admin User Function
 async function createAdminUser() {
   try {
-    const adminExists = await User.findOne({ username: config.ADMIN_USERNAME });
-    
+    const adminExists = await User.findOne({
+      $or: [
+        { username: config.ADMIN_USERNAME },
+        { email: 'admin@zac-guide.com' }
+      ]
+    });
+
     if (!adminExists) {
       const hashedPassword = await bcrypt.hash(config.ADMIN_PASSWORD, 12);
-      
       const adminUser = new User({
         username: config.ADMIN_USERNAME,
         email: 'admin@zac-guide.com',
@@ -78,7 +82,6 @@ async function createAdminUser() {
         isAdmin: true,
         isVerified: true
       });
-      
       await adminUser.save();
       console.log('✅ Admin user created successfully');
       console.log(`👤 Username: ${config.ADMIN_USERNAME}`);
@@ -87,9 +90,10 @@ async function createAdminUser() {
       console.log('✅ Admin user already exists');
     }
   } catch (error) {
-    console.error('❌ Error creating admin user:', error);
+    console.error('❌ Error creating admin user:', error.message);
   }
 }
+
 
 // Auth Middleware
 const auth = async (req, res, next) => {

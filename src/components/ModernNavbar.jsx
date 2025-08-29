@@ -120,11 +120,11 @@ export default function ModernNavbar() {
                     <button className="flex items-center gap-2 px-3 py-2 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 hover:bg-white/20 transition-all duration-300">
                       <div className="w-8 h-8 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-full flex items-center justify-center">
                         <span className="text-black font-bold text-sm">
-                          {user.username.charAt(0).toUpperCase()}
+                          {user.username ? user.username.charAt(0).toUpperCase() : 'U'}
                         </span>
                       </div>
                       <span className="text-white font-medium hidden sm:block">
-                        {user.username}
+                        {user.username || 'Usuário'}
                       </span>
                       <UserCircleIcon className="w-4 h-4 text-gray-300" />
                     </button>
